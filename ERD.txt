@@ -1,0 +1,71 @@
+Entity Relationship Diagram (ERD) Overview
+-------------------------------------------
+This ERD represents the structure of a company database containing information about employees, their salaries, departments, managers, and job titles. The database is designed to capture and manage relationships between these entities, ensuring that the data is organized and easily queryable.
+
+Tables and Their Descriptions
+-----------------------------
+1. departments:
+   - dept_no (CHAR(4), Primary Key)
+   - dept_name (VARCHAR(40), Unique, Not Null)
+   * This table stores the details of each department in the company.
+
+2. employees:
+   - emp_no (INT, Primary Key)
+   - birth_date (DATE, Not Null)
+   - first_name (VARCHAR(14), Not Null)
+   - last_name (VARCHAR(16), Not Null)
+   - gender (ENUM('M', 'F'), Not Null)
+   - hire_date (DATE, Not Null)
+   * This table contains personal and employment details of each employee.
+
+3. salaries:
+   - emp_no (INT, Foreign Key referencing employees(emp_no))
+   - salary (INT, Not Null)
+   - from_date (DATE, Not Null)
+   - to_date (DATE, Not Null)
+   * This table records the salary history of each employee.
+
+4. titles:
+   - emp_no (INT, Foreign Key referencing employees(emp_no))
+   - title (VARCHAR(50), Not Null)
+   - from_date (DATE, Not Null)
+   - to_date (DATE)
+   * This table tracks the job titles held by employees over time.
+
+5. dept_emp:
+   - emp_no (INT, Foreign Key referencing employees(emp_no))
+   - dept_no (CHAR(4), Foreign Key referencing departments(dept_no))
+   - from_date (DATE, Not Null)
+   - to_date (DATE, Not Null)
+   * This table links employees to the departments they work in.
+
+6. dept_manager:
+   - dept_no (CHAR(4), Foreign Key referencing departments(dept_no))
+   - emp_no (INT, Foreign Key referencing employees(emp_no))
+   - from_date (DATE, Not Null)
+   - to_date (DATE, Not Null)
+   * This table records the managers assigned to each department.
+
+Relationships Between Tables
+----------------------------
+- The `departments` table is linked to the `dept_emp` and `dept_manager` tables through the `dept_no` column.
+- The `employees` table is linked to the `salaries`, `titles`, `dept_emp`, and `dept_manager` tables through the `emp_no` column.
+- The `dept_emp` and `dept_manager` tables serve as junction tables, creating many-to-many relationships between `employees` and `departments`.
+
+Primary Keys and Foreign Keys
+-----------------------------
+- Primary Keys:
+  * `dept_no` in `departments`
+  * `emp_no` in `employees`
+  * Composite keys in `salaries`, `titles`, `dept_emp`, and `dept_manager`
+- Foreign Keys:
+  * `emp_no` in `salaries` references `employees(emp_no)`
+  * `emp_no` in `titles` references `employees(emp_no)`
+  * `emp_no` in `dept_emp` references `employees(emp_no)`
+  * `dept_no` in `dept_emp` references `departments(dept_no)`
+  * `emp_no` in `dept_manager` references `employees(emp_no)`
+  * `dept_no` in `dept_manager` references `departments(dept_no)`
+
+Conclusion
+----------
+This ERD and its associated textual description rovide a comprehensive overview of the company’s employee management database, detailing the structure and relationships between employees, departments, salaries, titles, and management roles. This structure supports robust data retrieval and management for business operations.
